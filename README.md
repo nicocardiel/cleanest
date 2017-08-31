@@ -1,5 +1,4 @@
 # cleanest
-Semiautomatic removal of cosmic rays
 
 This program was initially developed as part of the reduceme package
 (https://github.com/nicocardiel/reduceme). Due to historical reasons, reduceme

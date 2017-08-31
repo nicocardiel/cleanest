@@ -19,9 +19,6 @@ Webpage (source): https://github.com/nicocardiel/cleanest
 Installation example (Mac OSX):
 
 $ ./autogen.sh
-
 $ ./configure F77=gfortran-mp-6
-
 $ make
-
 $ sudo make install

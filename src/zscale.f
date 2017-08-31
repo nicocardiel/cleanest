@@ -6,8 +6,8 @@ C E-mail: cardiel@ucm.es
 C------------------------------------------------------------------------------
 C This routine is free software; you can redistribute it and/or modify it
 C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
+C Software Foundation; either version 3 of the License, or (at your option) any
+C later version.
 C------------------------------------------------------------------------------
 C Calcula los cortes z1 y z2 empleando una escala ZSCALE al estilo Iraf. Para
 C que el cálculo sea rápido, sólo se emplean, como máximo, NZMAX píxels de la 

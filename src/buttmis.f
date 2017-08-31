@@ -7,8 +7,8 @@ C E-mail: cardiel@ucm.es
 C------------------------------------------------------------------------------
 C These routines are free software; you can redistribute them and/or modify them
 C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
+C Software Foundation; either version 3 of the License, or (at your option) any
+C later version.
 C------------------------------------------------------------------------------
 Comment
 C

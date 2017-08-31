@@ -1,0 +1,25 @@
+syntax: glob
+
+.gitignore~
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+configure
+depcomp
+install-sh
+missing
+src/Makefile
+src/Makefile.in
+src/button.inc
+src/dimensions.inc
+src/cleanest.dSYM/
+src/*.o
+src/cleanest
+stamp-h1

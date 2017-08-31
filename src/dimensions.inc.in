@@ -1,0 +1,25 @@
+        INTEGER NCMAX
+        PARAMETER (NCMAX=@NXMAX@)
+        INTEGER NSMAX
+        PARAMETER (NSMAX=@NYMAX@)
+        INTEGER NAUXMAX
+        PARAMETER (NAUXMAX=@NAUXMAX@)
+C------------------------------------------------------------------------------
+        INTEGER MAX_ID_RED      !maximum number of simultaneous graphic devices
+        PARAMETER (MAX_ID_RED=8)
+C------------------------------------------------------------------------------
+!       CHARACTER*12 CLAVE_RED         !fixed identification for REDUCEME files
+!       PARAMETER (CLAVE_RED='abcdefghijkl')
+C------------------------------------------------------------------------------
+!       INTEGER NSCAN                 !image dimension in the spatial direction
+!       INTEGER NCHAN              !image dimension in the wavelength direction
+!       REAL    STWV                     !central wavelength of the first pixel
+!       REAL    DISP       !dispersion (Angs/pixel) in the wavelength direction
+C------------------------------------------------------------------------------
+!       REAL AIRMASS                                                   !airmass
+!       REAL TIMEXPOS                                            !exposure time
+!       CHARACTER*255 OBJECT                       !name of the observed object
+!       CHARACTER*255 FITSFILE             !file name of the original FITS file
+!       CHARACTER*255 COMMENT       !comment to be included in the image header
+!       CHARACTER*20 THISPROGRAM                !current program being executed
+

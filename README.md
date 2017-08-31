@@ -13,15 +13,13 @@ under the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 3 of the License, or (at your option) any
 later version.
 
-Maintainer: Nicolás Cardiel, cardiel@ucm.es
-Webpage (source): https://github.com/nicocardiel/cleanest
+- Maintainer: Nicolás Cardiel, cardiel@ucm.es
+- Webpage (source): https://github.com/nicocardiel/cleanest
 
 Installation example (Mac OSX):
-
+```
 $ ./autogen.sh
-
 $ ./configure F77=gfortran-mp-6
-
 $ make
-
 $ sudo make install
+```

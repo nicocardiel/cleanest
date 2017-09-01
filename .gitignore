@@ -15,6 +15,7 @@ configure
 depcomp
 install-sh
 missing
+docs/_build
 src/Makefile
 src/Makefile.in
 src/button.inc

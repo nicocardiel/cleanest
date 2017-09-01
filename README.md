@@ -1,10 +1,10 @@
 # cleanest
 
-This program was initially developed as part of the reduceme package
-(https://github.com/nicocardiel/reduceme). Due to historical reasons, reduceme
+This program was initially developed as part of the `Reduceme` package
+(https://github.com/nicocardiel/reduceme). Due to historical reasons, `Reduceme`
 images are not stored as FITS files. For that reason, and in order to
 facilitate the use of cleanest without the need to convert the images to/from
-reduceme format to FITS, cleanest has been detached from the reduceme package
+`Reduceme` to FITS format, cleanest has been detached from the `Reduceme` package
 and converted in a stand-alone program.
 
 

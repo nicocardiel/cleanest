@@ -3,8 +3,8 @@
 This program was initially developed as part of the `Reduceme` package
 (https://github.com/nicocardiel/reduceme). Due to historical reasons, `Reduceme`
 images are not stored as FITS files. For that reason, and in order to
-facilitate the use of cleanest without the need to convert the images to/from
-`Reduceme` to FITS format, cleanest has been detached from the `Reduceme` package
+facilitate the use of `cleanest` without the need to convert the images to/from
+`Reduceme` to FITS format, `cleanest` has been detached from the `Reduceme` package
 and converted in a stand-alone program.
 
 

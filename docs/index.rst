@@ -24,6 +24,8 @@ Universidad Complutense de Madrid.
 Documentation outline
 ---------------------
 
+Work in progress!
+
 .. toctree::
    :maxdepth: 2
 

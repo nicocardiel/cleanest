@@ -17,15 +17,17 @@ facilitate the use of *cleanest* without the need to convert the images to/from
 REDUCEME format to FITS, *cleanest* has been detached from the REDUCEME package
 and converted in a stand-alone program.
 
-This software was created by N. Cardiel as part of his thesis work, developed
-under the supervision of J. Gorgas, at the Departamento de Astrofísica of the
-Universidad Complutense de Madrid.
+This software was created by Nicolás Cardiel as part of his thesis work,
+developed under the supervision of Javier Gorgas, at the Departamento de
+Astrofísica of the Universidad Complutense de Madrid.
 
 Documentation outline
 ---------------------
 
-Work in progress!
-
 .. toctree::
    :maxdepth: 2
+
+   license_agreement
+   installation
+   using_the_program
 

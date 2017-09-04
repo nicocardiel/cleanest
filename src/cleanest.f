@@ -177,7 +177,7 @@ C
         INTEGER NTOPMAX
         PARAMETER(NPPMAX=101)         !si se cambia hacerlo en todos los sitios
         PARAMETER(NBOTONES=18)
-        PARAMETER (NTOPMAX=1000)                     !numero maximo para TOP100
+        PARAMETER (NTOPMAX=1000)                    !numero maximo para TOP1000
 C
         INTEGER I,J,K,L,L1,L2
         INTEGER BITPIX,BITPIX_ERR
@@ -227,7 +227,7 @@ C
         CHARACTER*255 NAMFIL,ORIGINAL_NAMFIL
         CHARACTER*255 HISTFILE
         CHARACTER*255 OBJECT,OBJECT_ERR
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
+        LOGICAL TOP1000CLEAN(NCMAX,NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LSIGCR,LFACTCR,LMINVCR,LOTHERCR
         LOGICAL CRFOUND
@@ -269,9 +269,9 @@ C
         COMMON/BLK23/AREPLACE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-        COMMON/BLK1TOP100/ITOP,JTOP
-        COMMON/BLK2TOP100/ATOP
-        COMMON/BLK3TOP100/TOP100CLEAN
+        COMMON/BLK1TOP1000/ITOP,JTOP
+        COMMON/BLK2TOP1000/ATOP
+        COMMON/BLK3TOP1000/TOP1000CLEAN
 C------------------------------------------------------------------------------
         DATA (LABEL(I),I=1,NBOTONES)/
      +   '[s]tart','[r]egion','[w]indow','[a]utomatic','[l]ook',
@@ -419,7 +419,8 @@ C
         WRITE(*,101)'start.....- begin automatic detection of C.R. '//
      +   '(clean by HAND)'
         WRITE(*,101)'region....- examination of some pixel region'
-        WRITE(*,101)'window....- change display window edge size'
+        WRITE(*,101)'window....- change edge size of displayed image'//
+     +   ' region'
         WRITE(*,101)'automatic.- clean automatically'
         WRITE(*,101)'look......- have a look to the image'
         WRITE(*,101)'options...- change searching options'
@@ -517,8 +518,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(IMENU.EQ.3)THEN
           CALL BUTTON(3,LABEL(3),5)
-          WRITE(*,101)'New size?'
-          WRITE(*,100)'(Note: this number must be odd) '
+          WRITE(*,100)'New size (this number must be odd) '
           WRITE(CDUMMY,*)NPP
           NPP=READI(CDUMMY)
           IF(MOD(NPP,2).EQ.0)THEN
@@ -571,7 +571,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Nota: la llamada a HISTOGRAMA tambien inicializa las variables SCANYES,
-C CHANYES, y TOP100CLEAN, de modo que podemos alterar despues estos valores
+C CHANYES, y TOP1000CLEAN, de modo que podemos alterar despues estos valores
 C en SUBPLOT.
         IF(IMENU.EQ.10)THEN
           CALL BUTTON(10,LABEL(10),5)
@@ -614,7 +614,7 @@ C
               WRITE(*,100)'ATOP (in sigma units): '
               WRITE(*,*) ATOP(NTOP)
               IF(SCANYES(I).AND.CHANYES(J))THEN
-                IF(TOP100CLEAN(J,I))THEN
+                IF(TOP1000CLEAN(J,I))THEN
                   WRITE(*,100)'WARNING: pixel skipped'
                   WRITE(*,101)' (already cleaned).'
                 ELSE
@@ -1237,7 +1237,8 @@ C
 C Realiza un histograma de la imagen. Segun el valor de NTYPE:
 C 1 - Histograma en senhal
 C 2 - Histograma en desviaciones respecto a la media en unidades de SIGMA local
-C 3 - Top 100: busca los 100 pixels con mayor valor en la imagen de SIGMA local
+C 3 - Top 1000: busca los 1000 pixels con mayor valor en la imagen de SIGMA 
+C     local
         IMPLICIT NONE
         INTEGER NTYPE
         CHARACTER*(*) NAMFIL
@@ -1245,7 +1246,7 @@ C
         INTEGER NBINMAX
         PARAMETER (NBINMAX=1000)                     !numero maximo de binnings
         INTEGER NTOPMAX
-        PARAMETER (NTOPMAX=1000)                     !numero maximo para TOP100
+        PARAMETER (NTOPMAX=1000)                    !numero maximo para TOP1000
 C
         INCLUDE 'dimensions.inc'
         CHARACTER*255 READC
@@ -1270,19 +1271,19 @@ C
         CHARACTER*75 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL SCANYES(NSMAX),CHANYES(NCMAX)
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
+        LOGICAL TOP1000CLEAN(NCMAX,NSMAX)
         COMMON/BLKDATA/A,NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK19/CHANYES,SCANYES
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-        COMMON/BLK1TOP100/ITOP,JTOP
-        COMMON/BLK2TOP100/ATOP
-        COMMON/BLK3TOP100/TOP100CLEAN
+        COMMON/BLK1TOP1000/ITOP,JTOP
+        COMMON/BLK2TOP1000/ATOP
+        COMMON/BLK3TOP1000/TOP1000CLEAN
 C------------------------------------------------------------------------------
 C seleccionamos region
         IF(NTYPE.EQ.3)THEN
-          WRITE(*,101)'Enter region to be used to calculate top 100:'
+          WRITE(*,101)'Enter region to be used to calculate top 1000:'
         ELSE
           WRITE(*,101)'Enter region to be used to calculate histogram:'
         END IF
@@ -1318,7 +1319,7 @@ C
           END DO
           DO I=1,NSCAN
             DO J=1,NCHAN
-              TOP100CLEAN(J,I)=.FALSE.
+              TOP1000CLEAN(J,I)=.FALSE.
             END DO
           END DO
         END IF
@@ -1332,28 +1333,24 @@ C seleccionamos datos a representar en el histograma
             END DO
           END DO
         ELSEIF((NTYPE.EQ.2).OR.(NTYPE.EQ.3))THEN
-          WRITE(*,*)
           DO I=NS1,NS2
-            !WRITE(*,'(A,I4.4,$)')'\\b\\b\\b\\b',I
             DO J=NC1,NC2
               CALL STATISTICS(J,I)
               B(J,I)=(A(J,I)-MEAN)/SIGMA
             END DO
           END DO
-          WRITE(*,*)
         END IF
         WRITE(*,101)'  ..OK!'
 C------------------------------------------------------------------------------
-C calculamos TOP100
+C calculamos TOP1000
         IF(NTYPE.EQ.3)THEN
-          WRITE(*,101)'Sorting...'
+          WRITE(*,100)'Sorting...'
           DO NTOP=1,NTOPMAX
             ITOP(NTOP)=0
             JTOP(NTOP)=0
           END DO
           NTOP=0
           DO I=NS1,NS2
-            !WRITE(*,'(A,I4.4,$)')'\\b\\b\\b\\b',I
             DO J=NC1,NC2
               IF(NTOP.LT.NTOPMAX)THEN
                 NTOP=NTOP+1
@@ -1373,7 +1370,7 @@ C calculamos TOP100
               END IF
             END DO
           END DO
-          WRITE(*,*)
+          WRITE(*,101)' ..OK'
         END IF
 C------------------------------------------------------------------------------
         BMINF=B(NC1,NS1)
@@ -1462,14 +1459,14 @@ ccc       CALL PGIDEN_RED
           IF(NTYPE.EQ.1)THEN
             CALL PGLABEL('No. of counts','Log(N\dpixels\u)',NAMFIL)
           ELSE
-            CALL PGLABEL('Deviations of the mean (in \gs units)',
-     +       'Log(N\dpixels\u)',NAMFIL)
+            CALL PGLABEL('Deviations with respect to the local mean '//
+     +       '(in \gs units)','Log\d10\u(N\dpixels\u)',NAMFIL)
           END IF
         END DO
 C
         IF(NTYPE.EQ.3)THEN
           WRITE(*,100)'NOTE: the dashed green-line indicates the '
-          WRITE(*,101)'TOP100 level'
+          WRITE(*,101)'TOP1000 level'
         END IF
         WRITE(*,100)'Replot (y/n) '
         CREPLOT(1:1)=READC('n','yn')
@@ -1576,7 +1573,7 @@ ccc     REAL X1VPORT,X2VPORT,Y1VPORT,Y2VPORT
         LOGICAL LBEXIST
         LOGICAL IFPIXEL(NPPMAX,NPPMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
+        LOGICAL TOP1000CLEAN(NCMAX,NSMAX)
         COMMON/BLKDATA/A,NSCAN,NCHAN
         COMMON/BLKERR/ERR
         COMMON/BLK1/MEAN,SIGMA
@@ -1606,7 +1603,7 @@ ccc     REAL X1VPORT,X2VPORT,Y1VPORT,Y2VPORT
         COMMON/BLK23/AREPLACE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-        COMMON/BLK3TOP100/TOP100CLEAN
+        COMMON/BLK3TOP1000/TOP1000CLEAN
 C------------------------------------------------------------------------------
 C do not clean automatically C.R. very near to the image border
         IF(CLEANAUTO)THEN
@@ -1852,7 +1849,7 @@ C------------------------------------------------------------------------------
           WRITE(*,*)
           WRITE(*,104)'--[INFORMATION]--> NO. OF CR. REMOVED: ',
      +     NTOTCR
-          WRITE(*,100)' current image: '
+          WRITE(*,100)'current image: '
           WRITE(*,101)NAMFIL(1:TRUELEN(NAMFIL))
           RETURN
         END IF
@@ -1894,7 +1891,7 @@ C------------------------------------------------------------------------------
           WRITE(*,*)
           WRITE(*,104)'--[INFORMATION]--> NO. OF CR. REMOVED: ',
      +     NTOTCR
-          WRITE(*,100)' current image: '
+          WRITE(*,100)'current image: '
           WRITE(*,101)NAMFIL(1:TRUELEN(NAMFIL))
           IF(PINTA)THEN
             WRITE(*,*)
@@ -1990,7 +1987,7 @@ C------------------------------------------------------------------------------
             DO II=NS1,NS2
               DO JJ=NC1,NC2
                 A(JJ,II)=AA(JJ,II)
-                TOP100CLEAN(JJ,II)=.FALSE.
+                TOP1000CLEAN(JJ,II)=.FALSE.
               END DO
             END DO
             IF(CERR.EQ.'y')THEN
@@ -2290,7 +2287,7 @@ C------------------------------------------------------------------------------
                   A(MJJ,II)=A(MJJ,II)*REAL(MJJ-NC1+1)+COEFP(LL)
                 END DO
                 MASK(MJJ-NC1+1,II-NS1+1)=.FALSE.
-                TOP100CLEAN(MJJ,II)=.TRUE.
+                TOP1000CLEAN(MJJ,II)=.TRUE.
               END DO
               IF(CERR.EQ.'y')THEN
                 LL=0     !metemos en XPOL(),YPOL() los puntos para el polinomio
@@ -2409,7 +2406,7 @@ C------------------------------------------------------------------------------
                   A(JJ,MII)=A(JJ,MII)*REAL(MII-NS1+1)+COEFP(LL)
                 END DO
                 MASK(JJ-NC1+1,MII-NS1+1)=.FALSE.
-                TOP100CLEAN(JJ,MII)=.TRUE.
+                TOP1000CLEAN(JJ,MII)=.TRUE.
               END DO
               IF(CERR.EQ.'y')THEN
                 LL=0     !metemos en XPOL(),YPOL() los puntos para el polinomio
@@ -2616,7 +2613,7 @@ ccc                 A(JJ,II)=A(JJ,II)+XSOL(K)*(XPOL(JJ-NC1+1)**(III))*
 ccc     +                                        (YPOL(II-NS1+1)**(JJJ))
                   END DO
                 END DO
-                TOP100CLEAN(JJ,II)=.TRUE.
+                TOP1000CLEAN(JJ,II)=.TRUE.
               END IF
             END DO
           END DO

@@ -127,6 +127,7 @@ this simple example we are not using it.
    Do remove mean x/y direction before looking for C.R.
    Edge size of the Searching Square: 15 pixels
    Plot type 1
+   Highlight pixels with mininum and maximum values
    FG and BG do not fixed
    
    Accept default options (y/n) [y] ?
@@ -460,6 +461,16 @@ ray). For that reason, this automatic process should be carried out at least
 twice, or complemented by a manual inspection using the ``[s]tart`` method in
 the main menu.
 
+For illustration, the sample image used in this documentation has been
+completely cleaned after executing the ``[a]utomatic`` detection twice (which
+removes the bulk of the cosmic rays), and then running ``[s]tart`` (to clean
+the cosmic rays located close to the image borders), with a total of 358 cosmic
+ray hits removed. The cleaned image is shown next.
+
+.. image:: images/cleaned.png
+   :width: 100%
+   :align: center
+
 Option ``[o]ptions`` in main menu
 .................................
 
@@ -483,7 +494,8 @@ by **cleaning**.
    (1) 3D-plot BARS (hidden lines)
    (2) 3D-plot BARS (transparent)
    (3) image
-   Option  (1,...,3) [1] ? 
+   Option  (1,...,3) [1] ?  
+   Highlight pixels with minimum and maximum signal (y/n) [y] ? 
    
    Are you using fixed FG and BG (y/n) [n] ? 
    

@@ -238,6 +238,7 @@ C
         LOGICAL LHISTFILE
         LOGICAL LREMOVEX,LREMOVEY
         LOGICAL LEXIT
+        LOGICAL LPLOTMINMAX
 C
         COMMON/BLKDATA/A,NSCAN,NCHAN
         COMMON/BLKERR/ERR
@@ -267,6 +268,7 @@ C
         COMMON/BLK21/ANGLE3D
         COMMON/BLK22/CERR
         COMMON/BLK23/AREPLACE
+        COMMON/BLK24/LPLOTMINMAX
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
         COMMON/BLK1TOP1000/ITOP,JTOP
@@ -368,6 +370,7 @@ C
      +   'looking for C.R.'
         WRITE(*,101)'Edge size of the Searching Square: 15 pixels'
         WRITE(*,101)'Plot type 1'
+        WRITE(*,101)'Highlight pixels with mininum and maximum values'
         WRITE(*,101)'FG and BG do not fixed'
         WRITE(*,101)
         WRITE(*,100)'Accept default options (y/n) '
@@ -383,6 +386,7 @@ C
         SIGCRAUX=10.0
         NWIN=15
         NTYPEPLOT=1
+        LPLOTMINMAX=.TRUE.
         CFIX_FGBG='n'
         IF(CDEF.EQ.'n')THEN
           CALL CROPTIONS
@@ -3342,11 +3346,13 @@ C
         REAL FACTOR
         REAL FIXED_FG,FIXED_BG
         CHARACTER*1 COPC,CAUX,CRXY,CCRXY,CFIX_FGBG,COTHERCR
+        CHARACTER*1 CPLOTMINMAX
         CHARACTER*20 CDUMMY
         CHARACTER*255 AUXFILE(NAUXMAX)
         LOGICAL LSIGCR,LFACTCR,LMINVCR,LOTHERCR
         LOGICAL LREMOVEX,LREMOVEY
         LOGICAL LOOP
+        LOGICAL LPLOTMINMAX
 C
 C Variable que preservan el valor original de la imagen que estamos limpiando
         CHARACTER*255 AUXOBJECT
@@ -3362,6 +3368,7 @@ C
         COMMON/BLK18/LREMOVEX,LREMOVEY
         COMMON/BLK20A/CFIX_FGBG
         COMMON/BLK20B/FIXED_FG,FIXED_BG
+        COMMON/BLK24/LPLOTMINMAX
 C------------------------------------------------------------------------------
 204     WRITE(*,100)'Are you employing SIGCR  (y/n) '
         COPC(1:1)=READC('y','yn')
@@ -3473,6 +3480,16 @@ C
         WRITE(CDUMMY,*)NTYPEPLOT
         WRITE(*,100)'Option '
         NTYPEPLOT=READILIM(CDUMMY,1,3)
+C
+        WRITE(*,100)'Highlight pixels with minimum and maximum'//
+     +   ' signal (y/n) '
+        IF(LPLOTMINMAX)THEN
+          CPLOTMINMAX='y'
+        ELSE
+          CPLOTMINMAX='n'
+        END IF
+        CPLOTMINMAX=READC(CPLOTMINMAX,'yn')
+        LPLOTMINMAX = (CPLOTMINMAX.EQ.'y')
 C
         WRITE(*,*)
         WRITE(*,100)'Are you using fixed FG and BG (y/n) '
@@ -3604,6 +3621,7 @@ C
         LOGICAL LBEXIST
         LOGICAL LPANORAMA
         LOGICAL LCOLOR(MAX_ID_RED)
+        LOGICAL LPLOTMINMAX
 C
         COMMON/BLKDATA/A,NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA  
@@ -3616,6 +3634,7 @@ C
         COMMON/BLK16/FACTOR
         COMMON/BLK17A/NAUXFRAME
         COMMON/BLK17B/AUXFRAME
+        COMMON/BLK24/LPLOTMINMAX
         COMMON/BLK17C/AUXFILE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
@@ -3789,12 +3808,14 @@ ccc       CALL PGIDEN_RED
 17      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          !marcamos los puntos con el valor máximo y el mínimo
-          CALL PGSCI(3)
-          CALL PGPOINT(1,REAL(JJMAX),REAL(IIMAX),23)
-          CALL PGSCI(5)
-          CALL PGPOINT(1,REAL(JJMIN),REAL(IIMIN),23)
-          CALL PGSCI(1)
+          IF(LPLOTMINMAX)THEN
+            !marcamos los puntos con el valor máximo y el mínimo
+            CALL PGSCI(3)
+            CALL PGPOINT(1,REAL(JJMAX),REAL(IIMAX),23)
+            CALL PGSCI(5)
+            CALL PGPOINT(1,REAL(JJMIN),REAL(IIMIN),23)
+            CALL PGSCI(1)
+          END IF
         END DO
         IF(.NOT.LPANORAMA)THEN
           WRITE(CDUMMY,*)BG

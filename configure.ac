@@ -51,6 +51,7 @@ AC_MSG_RESULT(LIBS set to... $LIBS)
 AC_CONFIG_FILES([Makefile 
                  src/Makefile
                  src/button.inc
-                 src/dimensions.inc])
+                 src/dimensions.inc
+                 src/version.inc])
 AC_OUTPUT
 

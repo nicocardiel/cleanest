@@ -1,0 +1,10 @@
+C------------------------------------------------------------------------------
+C Copyright 2017 Nicolás Cardiel
+C------------------------------------------------------------------------------
+C This program is free software; you can redistribute it and/or modify it
+C under the terms of the GNU General Public License as published by the Free
+C Software Foundation; either version 3 of the License, or (at your option) any
+C later version.
+C------------------------------------------------------------------------------
+        CHARACTER*8 VERSION ! format nn.nn
+        PARAMETER(VERSION='@VERSION@')

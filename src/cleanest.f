@@ -164,6 +164,7 @@ C
 C------------------------------------------------------------------------------
         IMPLICIT NONE
         INCLUDE 'dimensions.inc'
+        INCLUDE 'version.inc'
 C
         INTEGER TRUELEN
         INTEGER READI
@@ -314,7 +315,14 @@ C------------------------------------------------------------------------------
         NAUXFRAME=0
         ANGLE3D=0
         CPINTAAUTO='n'
-C
+C------------------------------------------------------------------------------
+C Welcome message
+        WRITE(*,111)
+        WRITE(*,101)'                       Welcome to cleanest '//
+     +   '(version '//VERSION(1:TRUELEN(VERSION))//')'
+        WRITE(*,111)
+        WRITE(*,*)
+C------------------------------------------------------------------------------
         WRITE(*,101)'>>> INTRODUCE INPUT DATA FRAME:'
         CALL SLEEFITS(A,NS,NC,ORIGINAL_NAMFIL,BITPIX,OBJECT,EXTNUM)
         NAMFIL=ORIGINAL_NAMFIL
@@ -1106,6 +1114,7 @@ C
 100     FORMAT(A,$)
 101     FORMAT(A)
 110     FORMAT(A,I6)
+111     FORMAT(79('*'))
         END
 C
 C******************************************************************************

@@ -20,6 +20,7 @@ src/Makefile
 src/Makefile.in
 src/button.inc
 src/dimensions.inc
+src/version.inc
 src/cleanest.dSYM/
 src/*.o
 src/cleanest

@@ -318,8 +318,11 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C Welcome message
         WRITE(*,111)
-        WRITE(*,101)'                       Welcome to cleanest '//
+        WRITE(*,101)'    Welcome to cleanest '//
      +   '(version '//VERSION(1:TRUELEN(VERSION))//')'
+        WRITE(*,112)
+        WRITE(*,101)'> See documentation in:'
+        WRITE(*,101)'http://cleanest.readthedocs.io/'
         WRITE(*,111)
         WRITE(*,*)
 C------------------------------------------------------------------------------
@@ -363,7 +366,7 @@ C
         WRITE(*,101)'SIGCRAUX = 10.0'
         WRITE(*,101)'Do remove mean x/y direction before '//
      +   'looking for C.R.'
-        WRITE(*,101)'Edge size of the Searching square: 15 pixels'
+        WRITE(*,101)'Edge size of the Searching Square: 15 pixels'
         WRITE(*,101)'Plot type 1'
         WRITE(*,101)'FG and BG do not fixed'
         WRITE(*,101)
@@ -1114,7 +1117,8 @@ C
 100     FORMAT(A,$)
 101     FORMAT(A)
 110     FORMAT(A,I6)
-111     FORMAT(79('*'))
+111     FORMAT(41('*'))
+112     FORMAT(41('-'))
         END
 C
 C******************************************************************************
@@ -3437,7 +3441,7 @@ C
         END IF
 C
         WRITE(*,*)
-207     WRITE(*,101)'Edge size (pixels) of the Searching square'
+207     WRITE(*,101)'Edge size (pixels) of the Searching Square'
         WRITE(*,100)'(Note: this number must be odd and .ge. 5) '
         WRITE(CDUMMY,*) NWIN
         NWIN=READI(CDUMMY)

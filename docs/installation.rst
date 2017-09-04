@@ -10,9 +10,10 @@ requirement is to have a relatively recent linux distribution or Mac OS X
 version, including a fortran compiler (e.g. ``g77`` or ``gfortran``) and the
 GNU ``autotools``.
 
-Before you install **cleanest**, make sure that the graphical library ``PGPLOT``
-is already installed in your computer. Some details about how I do typically
-install this library are given `here
+Before you install **cleanest**, make sure that ``CFITSIO``, as well as the
+graphical library ``PGPLOT``, are already installed in your computer. Some
+details about how I do typically install these libraries are given here for
+`CFITSIO <https://guaix.fis.ucm.es/~ncl/howto/howto-cfitsio>`_ and `PGPLOT
 <https://guaix.fis.ucm.es/~ncl/howto/howto-pgplot>`_.
 
 Installation of **cleanest**

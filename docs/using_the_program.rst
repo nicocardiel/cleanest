@@ -211,15 +211,20 @@ The new options available in this level are:
 
 - ``[p]anorama``: allows to subdivide the image into smaller rectangular
   subregions, which can be displayed one after another (this option is useful
-  to examine the whole image when the dimensions of such image are higher than
-  the monitor resolution)
+  to examine the image when its dimensions exceed the monitor resolution). When
+  selecting this option, the following buttons are activated: ``[j](jump)``,
+  ``[p](prev.)``, ``[n](next)``, and ``(s[t]op)`` (which otherwise remain
+  deactivated). With these buttons the user can easily examine the image in
+  small rectangular regions, moving from each region to the next or previous
+  one, jump to any region, or stop the detailed examination process.
 
 - ``e[x]it``: return to main menu
 
 - ``[r]egion``: search for c.r. at a fixed location
 
-- ``[j](jump)``, ``[p](prev.)``, ``[n](next)`` and ``s[t]op`` options, which 
-  are only available for the panorama visualization (see below).
+- ``[j](jump)``, ``[p](prev.)``, ``[n](next)`` and ``(s[t]op)`` options, which 
+  are only available for the panorama visualization (see option ``[p]anomara``
+  above)
 
 - ``Min[,/]Max``: set background and foreground to the mininum and and maximum
   values in the current displayed region. The keyboard option ``/`` set the
@@ -228,7 +233,7 @@ The new options available in this level are:
 
 - ``[1] Min+``, ``[2] Min-``, ``[3] Max+``, ``[4]Max-``: change background and
   foreground by steps (in this case, the step is ``100.000000``, but this
-  number can be modified by pressing the corresponding button).
+  number can be modified by pressing the corresponding button)
 
 - ``Aux.[f]rame``: if auxiliary frames have been loaded, this button allows to
   blink the different images (after pressing this button, the user must

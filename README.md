@@ -20,7 +20,7 @@ later version.
 Installation example (Mac OSX):
 ```
 $ ./autogen.sh
-$ ./configure F77=gfortran-mp-6
+$ ./configure F77=gfortran-mp-7
 $ make
 $ sudo make install
 ```

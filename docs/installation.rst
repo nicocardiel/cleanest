@@ -40,6 +40,22 @@ To install **cleanest** you need to perform the following steps:
 
    ``./configure F77=gfortran-mp-6``.
 
+.. note:: If you find problems detecting PGPLOT, you can help
+   ``configure`` by setting the expected location. For example:
+
+   ::
+
+      $ ./configure LDFLAGS="-L/opt/local/lib"
+
+.. warning:: Since Fortran 77 statically declares the dimensions of the arrays 
+   at compilation time, you may need to declare the maximum size of the
+   expected arrays (``NCMAX`` in the horizontal direction and ``NSMAX`` in the
+   vertical direction) while running ``configure``:
+   
+   ::
+
+      $ ./configure NCMAX=4096 NSMAX=4096
+
 3.- After successfully executing configure, the system is ready to proceed with
 the actual compilation of the code:
 

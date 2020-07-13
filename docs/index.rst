@@ -18,7 +18,9 @@ REDUCEME package and converted in a stand-alone program.
 
 This software was created by Nicolás Cardiel as part of his thesis work,
 developed under the supervision of Javier Gorgas, at the Departamento de
-Astrofísica of the Universidad Complutense de Madrid.
+Astrofísica of the Universidad Complutense de Madrid. If you use this program,
+please cite `Cardiel (2020)
+<https://ui.adsabs.harvard.edu/abs/2020ASPC..522..723C/abstract>`_.
 
 Documentation outline
 ---------------------

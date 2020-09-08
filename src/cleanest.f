@@ -288,7 +288,7 @@ C------------------------------------------------------------------------------
      +   '[x](interp)','[y](interp)','surf[a]ce','repla[z]e',
      +   '[s](bg/fg)','[n]=','[r](crosses)','[t](test)',
      +   '[u](undo)','[#](options)','[c](cont.)','[e](Exit)',
-     +   '3D([+]90\uo\d)','3D([-]90\uo\d)','3D(auto)',
+     +   '3D([+]90\uo\d)','3D(auto)','fi[l]l rect.',
      +   'Aux.[f]rame','s[k]ip x','sk[i]p y'/
         DATA (BMODE2(I),I=1,NBOTONES)/ 0, 0, 0, 0, 0, 0,
      +                                 0, 0, 3, 0, 0, 0,
@@ -1520,6 +1520,7 @@ C
         INTEGER NSCAN,NCHAN
         INTEGER NS,NC,NWIN
         INTEGER IXC,IYC
+        INTEGER IXCMIN,IXCMAX,IYCMIN,IYCMAX
         INTEGER NFIT
         INTEGER NDP
         INTEGER II1,II2,JJ1,JJ2
@@ -2038,44 +2039,43 @@ ccc                CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
           END IF
         END IF
 C------------------------------------------------------------------------------
-        IF((NB.EQ.14).OR.(CH.EQ.'-'))THEN
-          CALL BUTTQEX(14,LBEXIST)
-          IF(LBEXIST)THEN
-            CALL BUTTON(14,LABEL2(14),5)
-            ANGLE3D=ANGLE3D-90
-            IF(ANGLE3D.LT.0) ANGLE3D=ANGLE3D+360
-            IF(NTYPEPLOT.EQ.1)THEN
-              CALL PLOT3DBARS(NC1,NC2,NS1,NS2,0,ANGLE3D,MM3D,BG3D,FG3D)
-            ELSEIF(NTYPEPLOT.EQ.2)THEN
-              CALL PLOT3DBARS(NC1,NC2,NS1,NS2,1,ANGLE3D,MM3D,BG3D,FG3D)
-            END IF
-            DO ITERM=NTERM,1,-1
-              CALL PGSLCT(IDN(ITERM))
-              IF(ITERM.EQ.1)THEN
-                CALL BUTTSPR(0.55,0.95,0.10,0.80)
-                CALL RPGENV(REAL(NC1)-.6,REAL(NC2)+.6,REAL(NS1)-.6,
-     +           REAL(NS2)+.6,1,0)
-              ELSE
-                CALL PGVPORT(0.55,0.95,0.10,0.80)
-                CALL PGWNAD(REAL(NC1)-.6,REAL(NC2)+.6,REAL(NS1)-.6,
-     +           REAL(NS2)+.6)
-ccc                CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
-              END IF
-            END DO
-            CALL BUTTON(14,LABEL2(14),0)
-            GOTO 20
-          END IF
-        END IF
-C------------------------------------------------------------------------------
-        IF(NB.EQ.15)THEN
+        IF(NB.EQ.14)THEN
           IF(MM3D)THEN
-            LABEL2(15)='3D(auto)'
+            LABEL2(14)='3D(auto)'
             MM3D=.FALSE.
           ELSE
-            LABEL2(15)='3D(fixed)'
+            LABEL2(14)='3D(fixed)'
             MM3D=.TRUE.
           END IF
-          CALL BUTTON(15,LABEL2(15),0)
+          CALL BUTTON(14,LABEL2(14),0)
+          GOTO 20
+        END IF
+C------------------------------------------------------------------------------
+        IF((NB.EQ.15).OR.(CH.EQ.'l'))THEN
+          IXCMIN=65534
+          IXCMAX=0
+          IYCMIN=65534
+          IYCMAX=0
+          DO IXC=NC1,NC2
+            DO IYC=NS1,NS2
+              IF(MASK(IXC-NC1+1,IYC-NS1+1))THEN
+                IXCMIN=MIN(IXCMIN,IXC)
+                IXCMAX=MAX(IXCMAX,IXC)
+                IYCMIN=MIN(IYCMIN,IYC)
+                IYCMAX=MAX(IYCMAX,IYC)
+              END IF
+            END DO
+          END DO
+          IF(IXCMAX*IYCMAX.GT.0)THEN
+            DO IXC=IXCMIN,IXCMAX
+              DO IYC=IYCMIN,IYCMAX
+                CALL MARCA(IXC,IYC)
+                MASK(IXC-NC1+1,IYC-NS1+1)=.TRUE.
+              END DO
+            END DO
+          ELSE
+            WRITE(*,101)'Warning: select two pixels first!'
+          END IF
           GOTO 20
         END IF
 C------------------------------------------------------------------------------

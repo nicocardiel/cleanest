@@ -320,11 +320,16 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C Welcome message
         WRITE(*,111)
-        WRITE(*,101)'    Welcome to cleanest '//
+        WRITE(*,101)'              Welcome to cleanest '//
      +   '(version '//VERSION(1:TRUELEN(VERSION))//')'
         WRITE(*,112)
-        WRITE(*,101)'> See documentation in:'
+        WRITE(*,100)'-> Documentation: '
         WRITE(*,101)'http://cleanest.readthedocs.io/'
+        WRITE(*,*)
+        WRITE(*,101)'-> If you use this program, please cite Cardiel'//
+     +   ' (2020):'
+        WRITE(*,101)'https://ui.adsabs.harvard.edu/abs/2020ASPC..522'//
+     +   '..723C/abstract'
         WRITE(*,111)
         WRITE(*,*)
 C------------------------------------------------------------------------------
@@ -1121,8 +1126,8 @@ C
 100     FORMAT(A,$)
 101     FORMAT(A)
 110     FORMAT(A,I6)
-111     FORMAT(41('*'))
-112     FORMAT(41('-'))
+111     FORMAT(62('*'))
+112     FORMAT(62('-'))
         END
 C
 C******************************************************************************

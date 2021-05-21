@@ -35,7 +35,7 @@ C variables locales
         INTEGER ISTATUS,IREADWRITE,IUNIT
         INTEGER BLOCKSIZE,NULLVAL
         INTEGER NFOUND
-        INTEGER NAXIS_(0:2)                                !OJO: el limite es 2
+        INTEGER NAXIS_(0:3)                                !OJO: el limite es 2
         REAL FROW(NCMAX)
         CHARACTER*50 MYCOMMENT
         CHARACTER*80 CLINEA
@@ -45,6 +45,7 @@ C variables locales
         LOGICAL LNULL_(NCMAX,NSMAX)
         LOGICAL LANYNULL
         LOGICAL LROW(NCMAX)
+        LOGICAL LERROR
 C------------------------------------------------------------------------------
 C inicializamos variables
         ISTATUS=0               !controla posibles errores durante la ejecucion
@@ -133,12 +134,25 @@ C comprobamos que NAXIS=2
         CALL FTGKYJ(IUNIT,'NAXIS',NAXIS_(0),MYCOMMENT,ISTATUS)
         IF(ISTATUS.GT.0) CALL PRINTERROR(ISTATUS)
         IF(NAXIS_(0).GT.2)THEN
-          WRITE(*,101) '***FATAL ERROR***'
-          WRITE(*,100) '=> NAXIS='
-          WRITE(*,*) NAXIS_(0)
-          WRITE(*,101) '=> NAXIS > 2'
-          CALL FTCLOS(IUNIT,ISTATUS)
-          STOP
+          IF(NAXIS_(0).EQ.3)THEN
+            CALL FTGKNJ(IUNIT,'NAXIS',1,3,NAXIS_(1),NFOUND,ISTATUS)
+            IF(NAXIS_(3).NE.1)THEN
+              LERROR=.TRUE.
+            ELSE
+              WRITE(*,101) 'WARNING: NAXIS = 3. Reading anyway!'
+              LERROR=.FALSE.
+            END IF
+          ELSE
+            LERROR=.FALSE.
+          END IF
+          IF(LERROR)THEN
+            WRITE(*,101) '***FATAL ERROR***'
+            WRITE(*,100) '=> NAXIS='
+            WRITE(*,*) NAXIS_(0)
+            WRITE(*,101) '=> NAXIS > 2'
+            CALL FTCLOS(IUNIT,ISTATUS)
+            STOP
+          END IF
         ELSEIF(NAXIS_(0).EQ.1)THEN
           NAXIS_(2)=1
         END IF

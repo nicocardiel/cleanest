@@ -58,6 +58,7 @@ sleefits.f \
 systemfunction.f \
 truebeg.f \
 truelen.f \
+version.inc \
 writefits.f \
 zscale.f
 

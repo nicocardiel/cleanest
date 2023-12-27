@@ -38,7 +38,10 @@ To install **cleanest** you need to perform the following steps:
 .. note:: Mac users can easily indicate a different Fortran compiler using, for
    example: 
 
-   ``./configure F77=gfortran-mp-6``.
+   ``./configure F77=gfortran-mp-13 CC=gcc-mp-13``.
+
+   Note that the associated C compiler is also provided (this helps configure
+   to find PGPLOT).
 
 .. note:: If you find problems detecting PGPLOT, you can help
    ``configure`` by setting the expected location. For example:

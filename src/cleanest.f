@@ -1656,16 +1656,24 @@ C
           NS1=1
           NS2=NPP
         END IF
-        IF (NS2.GT.NS)THEN
+        IF(NS2.GT.NS)THEN
           NS1=NS-NPP+1
+          !solucion cuando la imagen es pequeña en vertical
+          IF(NS1.LT.1)THEN
+            NS1=1
+          END IF
           NS2=NS
         END IF
-        IF (NC1.LT.1)THEN
+        IF(NC1.LT.1)THEN
           NC1=1
           NC2=NPP
         END IF
-        IF (NC2.GT.NC)THEN
+        IF(NC2.GT.NC)THEN
           NC1=NC-NPP+1
+          !solucion cuando la imagen es pequeña en horizontal
+          IF(NC1.LT.1)THEN
+            NC1=1
+          END IF
           NC2=NC
         END IF
 C

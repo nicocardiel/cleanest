@@ -12,8 +12,9 @@ C later version.
 C------------------------------------------------------------------------------
 Comment
 C
-C SUBROUTINE RPGBEGIN(NTERM,IDN,LCOLOR)
+C SUBROUTINE RPGBEGIN(NIARG,NTERM,IDN,LCOLOR)
 C
+C Input: NIARG
 C Output: NTERM,IDN,LCOLOR
 C Output (COMMON): all global variables in button.inc
 C
@@ -33,6 +34,8 @@ C       X4VPORT=0.95
 C       Y3VPORT=0.80
 C       Y4VPORT=0.95
 C
+C INTEGER NIARG -> number of input arguments
+C
 C INTEGER NTERM -> number of opened graphic devices to be employed
 C         simultaneously
 C INTEGER IDN(8) -> identifier of the openned graphic devices
@@ -43,7 +46,7 @@ C
 C
 Comment
 C------------------------------------------------------------------------------
-        SUBROUTINE RPGBEGIN(NTERM,IDN,LCOLOR)
+        SUBROUTINE RPGBEGIN(NIARG,NTERM,IDN,LCOLOR)
         IMPLICIT NONE
 C------------------------------------------------------------------------------
         INCLUDE 'button.inc'
@@ -51,6 +54,7 @@ C------------------------------------------------------------------------------
         CHARACTER*255 READCBUTT
 C------------------------------------------------------------------------------
 C subroutine parameters
+        INTEGER NIARG                                !number of input arguments
         INTEGER NTERM  !number of graphic devices to be employed simultaneously
         INTEGER IDN(MAX_ID_BUTT)      !identification number of graphic devices
         LOGICAL LCOLOR(MAX_ID_BUTT)      !determines whether color is available
@@ -69,17 +73,21 @@ C------------------------------------------------------------------------------
 C determinamos si los botones se muestran en modo texto (la opción '#' se
 C emplea para utilizar los botones en modo texto pero sin preguntas en la
 C terminal, para ayudar así en la generación de documentación HTML)
-        LOOP=.TRUE.
-        DO WHILE(LOOP)
-          WRITE(*,100)'Are you using graphic buttons.....(y/n) [y] ? '
-          READ(*,101) CBUT
-          IF(CBUT.EQ.'') CBUT='y'
-          IF((CBUT.NE.'y').AND.(CBUT.NE.'n').AND.(CBUT.NE.'#'))THEN
-            WRITE(*,101) 'ERROR: invalid entry. Try again.'
-          ELSE
-            LOOP=.FALSE.
-          END IF
-        END DO
+        IF(NIARG.EQ.1)THEN
+          CBUT='y'
+        ELSE
+          LOOP=.TRUE.
+          DO WHILE(LOOP)
+            WRITE(*,100)'Are you using graphic buttons.....(y/n) [y] ? '
+            READ(*,101) CBUT
+            IF(CBUT.EQ.'') CBUT='y'
+            IF((CBUT.NE.'y').AND.(CBUT.NE.'n').AND.(CBUT.NE.'#'))THEN
+              WRITE(*,101) 'ERROR: invalid entry. Try again.'
+            ELSE
+              LOOP=.FALSE.
+            END IF
+          END DO
+        END IF
 C
         IF(CBUT.EQ.'#')THEN
           MODOTEXT_HTML=.TRUE.
@@ -130,9 +138,17 @@ C open graphic output for plots
           ELSE
             WRITE(*,100)' (? to see list) '
             IF(NTERM.GT.0)THEN
-              TERMINAL=READCBUTT('NONE','@')
+              IF(NIARG.EQ.1)THEN
+                TERMINAL='NONE'
+              ELSE
+                TERMINAL=READCBUTT('NONE','@')
+              END IF
             ELSE
-              TERMINAL=READCBUTT(DEFDEV(1:LDEV),'@')
+              IF(NIARG.EQ.1)THEN
+                TERMINAL='/Xserve'
+              ELSE
+                TERMINAL=READCBUTT(DEFDEV(1:LDEV),'@')
+              END IF
             END IF
             IF(TERMINAL.EQ.'?')THEN
               CALL PGLDEV

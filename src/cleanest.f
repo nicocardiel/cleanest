@@ -169,6 +169,7 @@ C
         INTEGER TRUELEN
         INTEGER READI
         INTEGER READILIM
+        INTEGER PGOPEN
         REAL READF
         CHARACTER*255 READC
 C
@@ -203,6 +204,7 @@ C
         INTEGER ANGLE3D
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NTOP,ITOP(NTOPMAX),JTOP(NTOPMAX)
+        INTEGER NIARG  !number of input arguments
         REAL A(NCMAX,NSMAX)
         REAL ERR(NCMAX,NSMAX)
         REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
@@ -333,18 +335,28 @@ C Welcome message
         WRITE(*,111)
         WRITE(*,*)
 C------------------------------------------------------------------------------
+        NIARG=IARGC()
+        IF(NIARG.GT.1)THEN
+          WRITE(*,101)'ERROR: maximum number of input parameters=1'
+          STOP
+        END IF
         WRITE(*,101)'>>> INTRODUCE INPUT DATA FRAME:'
-        CALL SLEEFITS(A,NS,NC,ORIGINAL_NAMFIL,BITPIX,OBJECT,EXTNUM)
+        CALL SLEEFITS(NIARG,A,NS,NC,ORIGINAL_NAMFIL,BITPIX,OBJECT,
+     +   EXTNUM)
         NAMFIL=ORIGINAL_NAMFIL
         L1=TRUELEN(NAMFIL)
         L2=TRUELEN(OBJECT)
 C
-        WRITE(*,101)
-        WRITE(*,100)'Work with error images (y/n) '
-        CERR(1:1)=READC('n','yn')
+        IF(NIARG.EQ.1)THEN
+          CERR='n'
+        ELSE
+          WRITE(*,101)
+          WRITE(*,100)'Work with error images (y/n) '
+          CERR(1:1)=READC('n','yn')
+        END IF
         IF(CERR.EQ.'y')THEN
           WRITE(*,101)'>>> INTRODUCE INOUT ERROR FRAME:'
-          CALL SLEEFITS(ERR,NS_,NC_,ERRFILE,BITPIX_ERR,OBJECT_ERR,
+          CALL SLEEFITS(0,ERR,NS_,NC_,ERRFILE,BITPIX_ERR,OBJECT_ERR,
      +     EXTNUM_ERR)
           IF((NS_.NE.NS).OR.(NC_.NE.NC))THEN
             WRITE(*,100)'--> NSCAN, NCHAN (data frame):'
@@ -378,8 +390,13 @@ C
         WRITE(*,101)'Highlight pixels with mininum and maximum values'
         WRITE(*,101)'FG and BG do not fixed'
         WRITE(*,101)
-        WRITE(*,100)'Accept default options (y/n) '
-        CDEF(1:1)=READC('y','yn')
+        IF(NIARG.EQ.1)THEN
+          WRITE(*,101)'Accepting default options'
+          CDEF='y'
+        ELSE
+          WRITE(*,100)'Accept default options (y/n) '
+          CDEF(1:1)=READC('y','yn')
+        END IF
         LSIGCR=.TRUE.
         LFACTCR=.FALSE.
         LMINVCR=.FALSE.
@@ -409,7 +426,7 @@ C
         HISTFILE='' !avoid compilation warning
         LHISTFILE=.FALSE.
 C
-        CALL RPGBEGIN(NTERM,IDN,LCOLOR)
+        CALL RPGBEGIN(NIARG,NTERM,IDN,LCOLOR)
         CALL PALETTE(3)
         CALL BUTTSYB(3)
         CALL BUTTSIT(.TRUE.)
@@ -3524,7 +3541,7 @@ C
 C
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            CALL SLEEFITS(AUXFRAME(1,1,NAUXFRAME),NS_,NC_,
+            CALL SLEEFITS(0,AUXFRAME(1,1,NAUXFRAME),NS_,NC_,
      +       AUXFILE(NAUXFRAME),AUXBITPIX,AUXOBJECT,AUXEXTNUM)
             IF((NS.NE.NS_).OR.(NC.NE.NC_))THEN
               WRITE(*,101) 'ERROR: unexpected dimensions'//

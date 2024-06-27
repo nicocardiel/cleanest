@@ -10,9 +10,11 @@ C Software Foundation; either version 3 of the License, or (at your option) any
 C later version.
 C------------------------------------------------------------------------------
 C Subrutina para leer una imagen
-        SUBROUTINE SLEEFITS(A,NSCAN,NCHAN,INFILE,BITPIX,OBJECT,EXTNUM)
+        SUBROUTINE SLEEFITS(NIARG,A,NSCAN,NCHAN,INFILE,BITPIX,OBJECT,
+     +   EXTNUM)
         IMPLICIT NONE
         INCLUDE 'dimensions.inc'
+        INTEGER NIARG
         REAL A(NCMAX,NSMAX)
         INTEGER NSCAN,NCHAN
         CHARACTER*255 INFILE
@@ -55,8 +57,12 @@ C inicializamos variables
 C------------------------------------------------------------------------------
         LOGFILE=.FALSE.
         DO WHILE(.NOT.LOGFILE)
-          WRITE(*,100) 'Input FITS file '
-          INFILE=READC('*.*fit*','@')
+          IF(NIARG.EQ.1)THEN
+            CALL GETARG(1, INFILE)
+          ELSE
+            WRITE(*,100) 'Input FITS file '
+            INFILE=READC('*.*fit*','@')
+          END IF
           IF((INDEX(INFILE,'*').NE.0).OR.
      +     (INDEX(INFILE,'?').NE.0))THEN
             L1=TRUEBEG(INFILE)
